@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.utils.chart_dataprocessor import ChartDataProcessor
-from app.services.cache import cache
+# from app.services.cache import cache
 
 # Define Blueprint
 charts_bp = Blueprint('charts', __name__)
@@ -13,7 +13,7 @@ scaler_path = "app/models/sscaler.joblib"
 chart_processor = ChartDataProcessor(dataset_path, encoder_path, scaler_path)
 
 @charts_bp.route('/distribution', methods=['GET'])
-@cache.memoize(timeout=86400)
+# @cache.memoize(timeout=86400)
 def get_distribution():
     """Returns category-wise data distribution for a given feature"""
     feature = request.args.get('feature')  # Get query parameter
@@ -24,14 +24,14 @@ def get_distribution():
     return jsonify(result)
 
 @charts_bp.route('/correlation', methods=['GET'])
-@cache.memoize(timeout=86400)
+# @cache.memoize(timeout=86400)
 def get_correlation_matrix():
     """Returns the correlation matrix of numerical features"""
     result = chart_processor.get_correlation_matrix()
     return jsonify(result)
 
 @charts_bp.route('/avg_risk', methods=['GET'])
-@cache.memoize(timeout=86400)
+# @cache.memoize(timeout=86400)
 def get_avg_risk():
     """Returns the average diabetes risk probability for a given feature"""
     feature = request.args.get('feature')

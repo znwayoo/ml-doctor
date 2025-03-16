@@ -1,15 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_migrate import Migrate
 
 from config import Config
 
-from app.services.cache import init_cache
+# from app.services.cache import init_cache
 
-# Initialize extensions
-db = SQLAlchemy()
-migrate = Migrate()
+# # Initialize extensions
+# db = SQLAlchemy()
+# migrate = Migrate()
 
 def create_app():
     """Factory function to create Flask app."""
@@ -17,10 +17,19 @@ def create_app():
     CORS(app)
     app.config.from_object(Config)
 
-    # Initialize database & migration
-    db.init_app(app)
-    migrate.init_app(app, db)
-    init_cache(app)
+    # # Initialize database & migration
+    # db.init_app(app)
+    # migrate.init_app(app, db)
+    # init_cache(app)
+
+    # # Add cache clearance command
+    # @app.cli.command('clear-cache')
+    # def clear_cache_():
+    #     """Clear all cached results"""
+    #     with app.app_context():
+    #         from app.services.cache import cache
+    #         cache.clear()
+    #         print("✅ Cache cleared successfully")
 
     # Import Blueprints
     from app.routes.api import api_bp
