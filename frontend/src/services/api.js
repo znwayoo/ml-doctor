@@ -16,17 +16,32 @@ export const api = {
   },
   
   getDistribution: async (feature) => {
-    const response = await axios.get(`${API_BASE_URL}/charts/distribution?feature=${feature}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/charts/distribution?feature=${feature}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching distribution:', error);
+      throw error;
+    }
   },
   
   getCorrelation: async () => {
-    const response = await axios.get(`${API_BASE_URL}/charts/correlation`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/charts/correlation`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching correlation:', error);
+      throw error;
+    }
   },
   
   getAverageRisk: async (feature) => {
-    const response = await axios.get(`${API_BASE_URL}/charts/avg_risk?feature=${feature}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/charts/avg_risk?feature=${feature}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching average risk:', error);
+      throw error;
+    }
   }
 };
