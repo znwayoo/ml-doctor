@@ -32,7 +32,7 @@ export const BMI_CATEGORIES = {
   UNDERWEIGHT: {
     value: 1,
     label: "Underweight",
-    color: "yellow",
+    color: "#8B8000",
     emoji: "⚠️",
     range: [0, 18.5]
   },
