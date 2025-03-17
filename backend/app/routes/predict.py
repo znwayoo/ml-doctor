@@ -10,7 +10,7 @@ predict_bp = Blueprint('predict', __name__)
 model_paths = {
     "Logistic Regression": "app/models/lr.joblib",
     "Decision Tree": "app/models/dt.joblib",
-    "XGBoost": "app/models/xgb.joblib",
+    "XGBoost": "app/models/xgb.json",
     "LightGBM": "app/models/lgb.joblib"
 }
 encoder_path = "app/models/onehot.joblib"

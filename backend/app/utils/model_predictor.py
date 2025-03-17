@@ -1,10 +1,22 @@
 import joblib
 import pandas as pd
+from xgboost import XGBClassifier
 
 class ModelPredictor:
     def __init__(self, model_paths, encoder_path, scaler_path):
         """Initialize and load models, encoder, and scaler."""
-        self.models = {name: joblib.load(path) for name, path in model_paths.items()}
+
+        self.models = {}
+        for name, path in model_paths.items():
+            if name == "XGBoost":
+                # Special handling for XGBoost
+                xgb_model = XGBClassifier()
+                xgb_model.load_model(path)  # Load JSON file
+                self.models[name] = xgb_model
+            else:
+                # Standard joblib loading for other models
+                self.models[name] = joblib.load(path)
+        # self.models = {name: joblib.load(path) for name, path in model_paths.items()}
         self.encoder = joblib.load(encoder_path)
         self.scaler = joblib.load(scaler_path)
         
