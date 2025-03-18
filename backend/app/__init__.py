@@ -17,7 +17,8 @@ def create_app():
         r"/api/*": {
             "origins": [
                 "http://localhost:5173",
-                "https://ml-doctor-frontend.onrender.com"
+                "https://ml-doctor-frontend.onrender.com",
+                "https://ml-doctor-backend.onrender.com"
             ]
         }
     })
