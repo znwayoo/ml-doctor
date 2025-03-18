@@ -13,15 +13,21 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={
-        r"/*": {  # Changed from /api/* to /* to allow all routes
-            "origins": [
-                "http://localhost:5173",
-                "https://ml-doctor-frontend.onrender.com",
-                "https://ml-doctor-backend.onrender.com"
-            ]
-        }
-    })
+    
+    # Updated CORS configuration
+    CORS(app, 
+         resources={
+             r"/*": {
+                 "origins": [
+                     "http://localhost:5173",
+                     "https://ml-doctor-frontend.onrender.com"
+                 ],
+                 "methods": ["GET", "POST", "OPTIONS"],
+                 "allow_headers": ["Content-Type", "Authorization"],
+                 "expose_headers": ["Content-Range", "X-Content-Range"],
+                 "supports_credentials": True
+             }
+         })
     # app.config.from_object(Config)
 
     # # Initialize database & migration
