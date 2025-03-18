@@ -315,7 +315,7 @@ export default function ProjectFindings() {
         </p>
         <figure className="my-6 p-4">
           <img 
-            src="src/img/fimp_dt.png" 
+            src="/fimp_dt.png" 
             alt="Feature Importance Plot of Decision Tree Model showing high blood pressure as the most important factor"
             className="mx-auto max-w-full h-auto"
           />
@@ -329,7 +329,7 @@ export default function ProjectFindings() {
         </p>
         <figure className="my-6 p-4">
           <img 
-            src="src/img/shap_xgb.png" 
+            src="/shap_xgb.png" 
             alt="SHAP Summary Plot of XGB showing feature impacts"
             className="mx-auto max-w-full h-auto"
           />
