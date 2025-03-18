@@ -3,7 +3,7 @@ services:
     name: ml-doctor-backend
     env: python
     buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && gunicorn main:app
+    startCommand: cd backend && gunicorn app.main:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.2

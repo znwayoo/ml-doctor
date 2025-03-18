@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
@@ -14,7 +14,7 @@ from flask_cors import CORS
 def create_app():
     app = Flask(__name__)
     CORS(app, resources={
-        r"/api/*": {
+        r"/*": {  # Changed from /api/* to /* to allow all routes
             "origins": [
                 "http://localhost:5173",
                 "https://ml-doctor-frontend.onrender.com",
@@ -37,6 +37,14 @@ def create_app():
     #         from app.services.cache import cache
     #         cache.clear()
     #         print("✅ Cache cleared successfully")
+
+    # Add root route for health check
+    @app.route('/')
+    def health_check():
+        return jsonify({
+            'status': 'healthy',
+            'message': 'ML Doctor API is running'
+        })
 
     # Import Blueprints
     from app.routes.api import api_bp
