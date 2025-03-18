@@ -313,16 +313,33 @@ export default function ProjectFindings() {
           From the <strong>tree-based models</strong>, I analyzed feature importance and found that 
           <strong> high blood pressure</strong> plays a significant role in determining diabetes risk.
         </p>
-        <div className="my-6 bg-gray-100 p-4 text-center">
-          [Feature Importance Plot Placeholder]
-        </div>
+        <figure className="my-6 p-4">
+          <img 
+            src="src/img/fimp_dt.png" 
+            alt="Feature Importance Plot of Decision Tree Model showing high blood pressure as the most important factor"
+            className="mx-auto max-w-full h-auto"
+          />
+          <figcaption className="text-center text-gray-600 mt-2 text-sm">
+            Feature Importance Plot of Decision Tree Model showing high blood pressure as the most important factor
+          </figcaption>
+        </figure>
         <p>
           Additionally, the <strong>SHAP summary plot</strong> highlights the features that have a positive 
           or negative impact on the model's predictions.
         </p>
-        <div className="my-6 bg-gray-100 p-4 text-center">
-          [SHAP Summary Plot Placeholder]
-        </div>
+        <figure className="my-6 p-4">
+          <img 
+            src="src/img/shap_xgb.png" 
+            alt="SHAP Summary Plot of XGB showing feature impacts"
+            className="mx-auto max-w-full h-auto"
+          />
+          <figcaption className="text-center text-gray-600 mt-2 text-sm">
+            SHAP Summary Plot of XGB showing feature impacts
+          </figcaption>
+        </figure>
+        <p>
+        Perhaps I should consider <strong>tweaking these features</strong> when further optimizing the models to improve performance. 
+        </p>
       </section>
 
       {/* Deployment Section */}
@@ -341,14 +358,67 @@ export default function ProjectFindings() {
           with <strong>Flask</strong> as the backend and <strong>React.js + TailwindCSS</strong> as the frontend 
           for a more robust and scalable solution.
         </p>
-        <p>
+        <p className='mb-2'>
           You can access the <strong>Streamlit prototype</strong> here: 
           <a href="https://diabetic-doctor-zno.streamlit.app/" 
              className="text-indigo-600 hover:text-indigo-800 ml-1">
             Diabetic Doctor
           </a>
         </p>
+        <p className='mb-2'>
+          You can access the <strong>full-stack application</strong> here: 
+          <a href="https://ml-doctor-frontend.onrender.com/" 
+             className="text-indigo-600 hover:text-indigo-800 ml-1">
+            ML Doctor
+          </a>
+        </p>
+        <p>
+        <strong>Note</strong>: Since the backend for full-stack application is hosted on free server of Render.com, 
+        it will take a few minutes to load the backend functions especially the diabetes prediction app.
+        </p>
       </section>
+      <section className="prose lg:prose-xl mb-12">
+        <h2 className="text-2xl font-bold mb-4">Conclusion</h2>
+        <p>
+          This project set out to explore whether machine learning could help assess diabetes risk using 
+          publicly available health data. While the results show promise, it’s important to acknowledge 
+          both the strengths and limitations of our approach.
+        </p>
+
+        <h3 className="text-xl font-semibold mt-4">Key Takeaways</h3>
+        <ol className="list-decimal pl-6 mb-2">
+          <li className='mb-2'>
+            <strong>Understanding Risk Factors:</strong> Our analysis identified key health indicators linked 
+            to diabetes risk. While these associations align with existing medical knowledge, correlation does 
+            not imply causation. The predictions should be interpreted cautiously, emphasizing the need for 
+            expert validation.
+          </li>
+          <li className='mb-2'>
+            <strong>Model Performance:</strong> Different machine learning models provided varying levels of 
+            accuracy and interpretability. While some performed well, no model is perfect, and predictions 
+            should not replace medical advice. This highlights the balance between predictive power and 
+            real-world applicability.
+          </li>
+          <li className='mb-2'>
+            <strong>Practical Applications:</strong> In theory, these models could assist in early risk assessment, 
+            helping individuals become more aware of potential health risks. However, without clinical validation, 
+            the predictions should be considered informative rather than diagnostic.
+          </li>
+          <li className='mb-2'>
+            <strong>Future Improvements:</strong> Expanding the dataset, improving feature selection, and exploring 
+            advanced modeling techniques could enhance accuracy. Deploying this model as a web application could 
+            improve accessibility, but ethical implications and user responsibility must also be considered.
+          </li>
+        </ol>
+
+        <p>
+          Ultimately, this project demonstrates that machine learning can provide meaningful insights into 
+          diabetes risk, but it is not a substitute for professional medical assessment. Instead, it serves 
+          as a step toward understanding how data science can support, rather than replace, human expertise 
+          in healthcare.
+        </p>
+      </section>
+
     </div>
   );
 }

@@ -3,7 +3,7 @@ export default function ResultModal({ results, bmiInfo, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-lg w-full m-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full">
         <h2 className="text-2xl font-bold mb-4">Your Results</h2>
         
         <div className="mb-4">
@@ -36,6 +36,11 @@ export default function ResultModal({ results, bmiInfo, onClose }) {
               </div>
             );
           })}
+        </div>
+
+        <div className="text-xs text-gray-500 italic text-center mt-4 mb-2">
+          Note: These predictions are for informational purposes only and should not be considered as medical advice. 
+          Please consult with a healthcare professional for proper medical diagnosis and treatment.
         </div>
 
         <button
