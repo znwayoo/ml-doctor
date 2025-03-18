@@ -1,14 +1,15 @@
 from flask import Blueprint, request, jsonify
 from app.utils.chart_dataprocessor import ChartDataProcessor
 # from app.services.cache import cache
+from config import PATHS
 
 # Define Blueprint
 charts_bp = Blueprint('charts', __name__)
 
-# Initialize data processor with dataset path
-dataset_path = "app/data/brfss2023_diabetes_cleaned.csv"
-encoder_path = "app/models/onehot.joblib"
-scaler_path = "app/models/sscaler.joblib"
+# Use paths directly
+dataset_path = PATHS['data']['dataset']
+encoder_path = PATHS['models']['encoder']
+scaler_path = PATHS['models']['scaler']
 
 chart_processor = ChartDataProcessor(dataset_path, encoder_path, scaler_path)
 

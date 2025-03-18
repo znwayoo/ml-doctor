@@ -3,7 +3,7 @@ from flask_cors import CORS
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
 
-from config import Config
+# from config import Config
 
 # from app.services.cache import init_cache
 
@@ -12,10 +12,16 @@ from config import Config
 # migrate = Migrate()
 
 def create_app():
-    """Factory function to create Flask app."""
     app = Flask(__name__)
-    CORS(app)
-    app.config.from_object(Config)
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": [
+                "http://localhost:5173",
+                "https://ml-doctor-frontend.onrender.com"
+            ]
+        }
+    })
+    # app.config.from_object(Config)
 
     # # Initialize database & migration
     # db.init_app(app)

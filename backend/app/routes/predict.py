@@ -2,19 +2,20 @@ from flask import Blueprint, request, jsonify
 from app.utils.model_predictor import ModelPredictor
 # from app.services.database import Prediction
 # from app.services.cache import cache
+from config import PATHS
 
 # Define Blueprint for predictions
 predict_bp = Blueprint('predict', __name__)
 
-# Load models
+# Define model paths using config
 model_paths = {
-    "Logistic Regression": "app/models/lr.joblib",
-    "Decision Tree": "app/models/dt.joblib",
-    "XGBoost": "app/models/xgb.json",
-    "LightGBM": "app/models/lgb.joblib"
+    "Logistic Regression": PATHS['models']['logistic'],
+    "Decision Tree": PATHS['models']['decision_tree'],
+    "XGBoost": PATHS['models']['xgboost'],
+    "LightGBM": PATHS['models']['lightgbm']
 }
-encoder_path = "app/models/onehot.joblib"
-scaler_path = "app/models/sscaler.joblib"
+encoder_path = PATHS['models']['encoder']
+scaler_path = PATHS['models']['scaler']
 
 # Initialize predictor class
 predictor = ModelPredictor(model_paths, encoder_path, scaler_path)
