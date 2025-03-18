@@ -1,48 +1,36 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
-
-# from config import Config
-
-# from app.services.cache import init_cache
-
-# # Initialize extensions
-# db = SQLAlchemy()
-# migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    
-    # Updated CORS configuration
+
+    # Define allowed origins
+    ALLOWED_ORIGINS = [
+        "http://localhost:5173",  # Local development
+        "https://ml-doctor-frontend.onrender.com"  # Production
+    ]
+
+    # CORS configuration
     CORS(app, 
          resources={
              r"/*": {
-                 "origins": [
-                     "http://localhost:5173",
-                     "https://ml-doctor-frontend.onrender.com"
-                 ],
+                 "origins": ALLOWED_ORIGINS,
                  "methods": ["GET", "POST", "OPTIONS"],
-                 "allow_headers": ["Content-Type", "Authorization"],
-                 "expose_headers": ["Content-Range", "X-Content-Range"],
-                 "supports_credentials": True
+                 "allow_headers": ["Content-Type", "Accept"],
              }
          })
-    # app.config.from_object(Config)
 
-    # # Initialize database & migration
-    # db.init_app(app)
-    # migrate.init_app(app, db)
-    # init_cache(app)
-
-    # # Add cache clearance command
-    # @app.cli.command('clear-cache')
-    # def clear_cache_():
-    #     """Clear all cached results"""
-    #     with app.app_context():
-    #         from app.services.cache import cache
-    #         cache.clear()
-    #         print("✅ Cache cleared successfully")
+    @app.after_request
+    def add_cors_headers(response):
+        origin = request.headers.get('Origin')
+        if origin in ALLOWED_ORIGINS:
+            if request.method == 'OPTIONS':
+                response.headers['Access-Control-Allow-Origin'] = origin
+                response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+                response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Accept'
+            else:
+                response.headers['Access-Control-Allow-Origin'] = origin
+        return response
 
     # Add root route for health check
     @app.route('/')

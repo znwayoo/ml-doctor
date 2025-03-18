@@ -48,13 +48,15 @@ predictor = ModelPredictor(model_paths, encoder_path, scaler_path)
 #     except Exception as e:
 #         return jsonify({"error": str(e)}), 500
 
-@predict_bp.route('/', methods=['POST'])
+@predict_bp.route('', methods=['POST', 'OPTIONS'])
 def predict():
     """API endpoint to get diabetes risk predictions."""
+    if request.method == 'OPTIONS':
+        return '', 204
+        
     try:
-        user_input = request.json  # Get JSON request body
+        user_input = request.json
         predictions = predictor.predict(user_input)
         return jsonify({"predictions": predictions})
-    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
