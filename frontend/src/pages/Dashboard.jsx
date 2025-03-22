@@ -85,15 +85,17 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
+      {/* Distribution Analysis Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Distribution Analysis</h2>
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Select Feature
           </label>
           <select
             value={selectedFeature}
             onChange={(e) => setSelectedFeature(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
             {features.map(feature => (
               <option key={feature.value} value={feature.value}>
@@ -102,54 +104,56 @@ export default function Dashboard() {
             ))}
           </select>
         </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {distributionData && (
+            <BarChart
+              data={distributionData}
+              title={`Distribution by ${selectedFeature}`}
+            />
+          )}
+          {avgRiskData && (
+            <BarChart
+              data={avgRiskData}
+              title={`Average Diabetes Risk by ${selectedFeature}`}
+            />
+          )}
+        </div>
+      </section>
 
-        <div>
+      {/* Confusion Matrix Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Model Performance Analysis</h2>
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Select Model for Confusion Matrix
+            Select Model
           </label>
           <select
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
             {models.map(model => (
               <option key={model} value={model}>
-                {model}
+                {model.replace('_', ' ')}
               </option>
             ))}
           </select>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {distributionData && (
-          <BarChart
-            data={distributionData}
-            title={`Distribution by ${selectedFeature}`}
-          />
-        )}
-        
-        {avgRiskData && (
-          <BarChart
-            data={avgRiskData}
-            title={`Average Diabetes Risk by ${selectedFeature}`}
-          />
-        )}
-
-        {confusionMatrix && console.log('Rendering Confusion Matrix:', confusionMatrix)}
         {confusionMatrix && (
           <ConfusionMatrix 
             data={confusionMatrix}
-            title={`Confusion Matrix of ${selectedModel}`}
+            title={`Confusion Matrix of ${selectedModel.replace('_', ' ')}`}
           />
         )}
-      </div>
+      </section>
 
-      {correlationData && (
-        <div className="mt-12">
+      {/* Correlation Matrix Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Feature Correlation Analysis</h2>
+        {correlationData && (
           <HeatMap data={correlationData} />
-        </div>
-      )}
+        )}
+      </section>
     </div>
   );
 }
