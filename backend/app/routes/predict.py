@@ -9,8 +9,8 @@ predict_bp = Blueprint('predict', __name__)
 
 # Define model paths using config
 model_paths = {
-    "Logistic Regression": PATHS['models']['logistic'],
-    "Decision Tree": PATHS['models']['decision_tree'],
+    "Logistic_Regression": PATHS['models']['logistic'],
+    "Decision_Tree": PATHS['models']['decision_tree'],
     "XGBoost": PATHS['models']['xgboost'],
     "LightGBM": PATHS['models']['lightgbm']
 }

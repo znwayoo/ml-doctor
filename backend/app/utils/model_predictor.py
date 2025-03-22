@@ -21,7 +21,7 @@ class ModelPredictor:
         self.scaler = joblib.load(scaler_path)
         
         # Models that need one-hot encoding & scaling
-        self.models_requiring_encoding = ["Logistic Regression", "KNN"]
+        self.models_requiring_encoding = ["Logistic_Regression", "KNN"]
 
         # Define feature types
         self.features_to_encode = ['age_group', 'race', 'education', 'bmi_category', 'alcohol_consumption_cat']

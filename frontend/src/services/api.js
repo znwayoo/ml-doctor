@@ -72,5 +72,15 @@ export const api = {
       console.error('Error fetching feature importance:', error);
       throw error;
     }
+  },
+  
+  getConfusionMatrix: async (model) => {
+    try {
+      const response = await axiosInstance.get(`/charts/confusion-matrix?model=${model}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching confusion matrix:', error);
+      throw error;
+    }
   }
 };

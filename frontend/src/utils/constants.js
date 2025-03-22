@@ -71,4 +71,3 @@ export const ALCOHOL_MAP = {
   "Frequent (16-30)": 3
 };
 
-// ... other mapping objects from your Streamlit app

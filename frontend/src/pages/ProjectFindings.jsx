@@ -7,7 +7,7 @@ export default function ProjectFindings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [featureImportance, setFeatureImportance] = useState(null);
-  const [selectedModel, setSelectedModel] = useState('Decision Tree');
+  const [selectedModel, setSelectedModel] = useState('Decision_Tree');
 
   useEffect(() => {
     const fetchDiabetesDistribution = async () => {
@@ -552,52 +552,19 @@ export default function ProjectFindings() {
       {/* Findings Section */}
       <section className="prose lg:prose-xl mb-12">
         <h2 className="text-2xl font-bold mb-4">Findings</h2>
-        <p>
+        <p className='mb-4'>
           From the <strong>tree-based models</strong>, I analyzed feature
           importance and found that
           <strong> high blood pressure</strong> plays a significant role in
           determining diabetes risk.
         </p>
-        <figure className="my-6 p-4">
-          <img
-            src="/fimp_dt.png"
-            alt="Feature Importance Plot of Decision Tree Model showing high blood pressure as the most important factor"
-            className="mx-auto max-w-full h-auto"
-          />
-          <figcaption className="text-center text-gray-600 mt-2 text-sm">
-            Feature Importance Plot of Decision Tree Model showing high blood
-            pressure as the most important factor
-          </figcaption>
-        </figure>
-        <p>
-          Additionally, the <strong>SHAP summary plot</strong> highlights the
-          features that have a positive or negative impact on the model's
-          predictions.
-        </p>
-        <figure className="my-6 p-4">
-          <img
-            src="/shap_xgb.png"
-            alt="SHAP Summary Plot of XGB showing feature impacts"
-            className="mx-auto max-w-full h-auto"
-          />
-          <figcaption className="text-center text-gray-600 mt-2 text-sm">
-            SHAP Summary Plot of XGB showing feature impacts
-          </figcaption>
-        </figure>
-        <p>
-          Perhaps I should consider <strong>tweaking these features</strong>{" "}
-          when further optimizing the models to improve performance.
-        </p>
-      </section>
-      {/* Feature Importance Section */}
-      <section className="prose lg:prose-xl mb-12">
-        <h3 className="text-xl font-semibold mb-4">
+        <h3 className="text-l font-bold mb-4">
           Feature Importance Analysis
         </h3>
 
         {/* Model Selection */}
         <div className="mb-4">
-          <label className="mr-2">Select Model:</label>
+          <label className="text-sm font-semibold mr-2">Select Model:</label>
           <select
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
@@ -675,7 +642,7 @@ export default function ProjectFindings() {
           </div>
         )}
 
-        <p className="mt-4">
+        <p className="mt-4 mb-4">
           This chart shows the relative importance of each feature in predicting
           diabetes risk according to the {selectedModel} model. 
           {selectedModel === "LightGBM" 
@@ -683,7 +650,27 @@ export default function ProjectFindings() {
             : " Higher percentages indicate stronger influence on the model's predictions."
           }
         </p>
+        <p>
+          Additionally, the <strong>SHAP summary plot</strong> highlights the
+          features that have a positive or negative impact on the model's
+          predictions.
+        </p>
+        <figure className="my-6 p-4">
+          <img
+            src="/shap_xgb.png"
+            alt="SHAP Summary Plot of XGB showing feature impacts"
+            className="mx-auto max-w-full h-auto"
+          />
+          <figcaption className="text-center text-gray-600 mt-2 text-sm">
+            SHAP Summary Plot of XGB showing feature impacts
+          </figcaption>
+        </figure>
+        <p>
+          Perhaps I should consider <strong>tweaking these features</strong>{" "}
+          when further optimizing the models to improve performance.
+        </p>
       </section>
+      
       {/* Deployment Section */}
       <section className="prose lg:prose-xl mb-12">
         <h2 className="text-2xl font-bold mb-4">Deployment</h2>

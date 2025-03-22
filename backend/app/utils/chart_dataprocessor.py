@@ -2,9 +2,10 @@ import pandas as pd
 import joblib
 import numpy as np
 from xgboost import XGBClassifier
+from sklearn.metrics import confusion_matrix
 
 class ChartDataProcessor:
-    def __init__(self, dataset_path, encoder_path, scaler_path, model_paths):
+    def __init__(self, dataset_path, xtest_path, ytest_path, xtest_onehot_path, ytest_onehot_path, encoder_path, scaler_path, model_paths):
         """Initialize by loading dataset, encoder, scaler and models"""
         self.df = pd.read_csv(dataset_path, index_col='id')
         self.models = {}
@@ -17,12 +18,18 @@ class ChartDataProcessor:
             else:
                 # Standard joblib loading for other models
                 self.models[name] = joblib.load(path)
+
+        self.X_test_label = pd.read_csv(xtest_path, index_col='id')
+        self.y_test_label = pd.read_csv(ytest_path, index_col='id')
+
+        self.X_test_onehot = pd.read_csv(xtest_onehot_path, index_col='id')
+        self.y_test_onehot = pd.read_csv(ytest_onehot_path, index_col='id')
         # self.models = {name: joblib.load(path) for name, path in model_paths.items()}
         self.encoder = joblib.load(encoder_path)
         self.scaler = joblib.load(scaler_path)
         
         # Models that need one-hot encoding & scaling
-        self.models_requiring_encoding = ["Logistic Regression", "KNN"]
+        self.models_requiring_encoding = ["Logistic_Regression", "KNN"]
 
         # Define feature types
         self.features_to_encode = ['age_group', 'race', 'education', 'bmi_category', 'alcohol_consumption_cat']
@@ -58,7 +65,7 @@ class ChartDataProcessor:
         
         for model_name, model in self.models.items():
             # Skip models that don't have feature_importances_
-            if model_name not in ["Decision Tree", "Random Forest", "XGBoost", "LightGBM"]:
+            if model_name not in ["Decision_Tree", "Random_Forest", "XGBoost", "LightGBM"]:
                 continue
                 
             try:
@@ -80,3 +87,23 @@ class ChartDataProcessor:
                 continue
         
         return feature_importance
+
+    def get_confusion_matrix(self, model_name):
+        """Returns confusion matrix for specified model"""
+        if model_name not in self.models:
+            return {"error": f"Model '{model_name}' not found"}
+        
+        model = self.models[model_name]
+
+        if model_name in self.models_requiring_encoding:
+            X_test_transformed = self.scaler.transform(self.X_test_onehot)
+            y_pred = model.predict(X_test_transformed)
+        else:
+            y_pred = model.predict(self.X_test_label)
+        
+        cm = confusion_matrix(self.y_test_label, y_pred)
+
+        return {
+            'matrix' : cm.tolist(),
+            'labels' : ['No Diabetes', 'Has Diabetes']
+        }
