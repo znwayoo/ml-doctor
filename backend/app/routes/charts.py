@@ -11,10 +11,16 @@ dataset_path = PATHS['data']['dataset']
 encoder_path = PATHS['models']['encoder']
 scaler_path = PATHS['models']['scaler']
 
-chart_processor = ChartDataProcessor(dataset_path, encoder_path, scaler_path)
+model_paths = {
+    "Logistic Regression": PATHS['models']['logistic'],
+    "Decision Tree": PATHS['models']['decision_tree'],
+    "XGBoost": PATHS['models']['xgboost'],
+    "LightGBM": PATHS['models']['lightgbm']
+}
+
+chart_processor = ChartDataProcessor(dataset_path, encoder_path, scaler_path, model_paths)
 
 @charts_bp.route('/distribution', methods=['GET'])
-# @cache.memoize(timeout=86400)
 def get_distribution():
     """Returns category-wise data distribution for a given feature"""
     feature = request.args.get('feature')  # Get query parameter
@@ -25,14 +31,12 @@ def get_distribution():
     return jsonify(result)
 
 @charts_bp.route('/correlation', methods=['GET'])
-# @cache.memoize(timeout=86400)
 def get_correlation_matrix():
     """Returns the correlation matrix of numerical features"""
     result = chart_processor.get_correlation_matrix()
     return jsonify(result)
 
 @charts_bp.route('/avg_risk', methods=['GET'])
-# @cache.memoize(timeout=86400)
 def get_avg_risk():
     """Returns the average diabetes risk probability for a given feature"""
     feature = request.args.get('feature')
@@ -41,3 +45,11 @@ def get_avg_risk():
 
     result = chart_processor.get_avg_risk_by_feature(feature)
     return jsonify(result)
+
+@charts_bp.route('/feature-importance', methods=['GET'])
+def get_feature_importance():
+    try:
+        importance_data = chart_processor.get_feature_importance()
+        return jsonify(importance_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

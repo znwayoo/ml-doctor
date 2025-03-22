@@ -19,7 +19,11 @@ export default function Dashboard() {
     { value: 'bmi_category', label: 'BMI Category' },
     { value: 'physical_activity', label: 'Physical Activity' },
     { value: 'smoking_status', label: 'Smoking Status' },
-    { value: 'alcohol_consumption_cat', label: 'Alcohol Consumption' }
+    { value: 'alcohol_consumption_cat', label: 'Alcohol Consumption' },
+    { value: 'high_blood_pressure', label: 'High Blood Pressure'},
+    { value: 'high_cholesterol', label: 'High Cholesterol'},
+    { value: 'heart_disease', label: 'Heart Disease'},
+    { value: 'kidney_disease', label: 'Kidney Disease'},
   ];
 
   useEffect(() => {
@@ -101,7 +105,7 @@ export default function Dashboard() {
       </div>
 
       {correlationData && (
-        <div className="mt-6">
+        <div className="mt-12">
           <HeatMap data={correlationData} />
         </div>
       )}

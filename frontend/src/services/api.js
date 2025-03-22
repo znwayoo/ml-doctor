@@ -61,5 +61,16 @@ export const api = {
       console.error('Error fetching average risk:', error);
       throw error;
     }
+  },
+  
+  getFeatureImportance: async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/charts/feature-importance`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching feature importance:', error);
+      throw error;
+    }
   }
 };
