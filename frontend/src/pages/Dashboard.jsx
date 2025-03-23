@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import BarChart from '../components/charts/BarChart';
+import Distribution from '../components/charts/Distribution';
 import HeatMap from '../components/charts/HeatMap';
 import ConfusionMatrix from '../components/charts/ConfusionMatrix';
 import { getFeatureLabel } from '../utils/dataTransformers';
+import FeatureImportance from '../components/charts/FeatureImportance';
 
 export default function Dashboard() {
   // State for data
@@ -11,15 +12,18 @@ export default function Dashboard() {
   const [correlationData, setCorrelationData] = useState(null);
   const [avgRiskData, setAvgRiskData] = useState(null);
   const [confusionMatrix, setConfusionMatrix] = useState(null);
+  const [featureImportance, setFeatureImportance] = useState(null);
   
   // Selection states
   const [selectedFeature, setSelectedFeature] = useState('age_group');
-  const [selectedModel, setSelectedModel] = useState('Decision_Tree');
+  const [selectedConfusionModel, setSelectedConfusionModel] = useState('Decision_Tree');
+  const [selectedFeatureModel, setSelectedFeatureModel] = useState('Decision_Tree');
   
   // Individual loading states
   const [distributionLoading, setDistributionLoading] = useState(true);
   const [confusionLoading, setConfusionLoading] = useState(true);
   const [correlationLoading, setCorrelationLoading] = useState(true);
+  const [featureImportanceLoading, setFeatureImportanceLoading] = useState(true);
   
   const [error, setError] = useState(null);
 
@@ -38,11 +42,12 @@ export default function Dashboard() {
     { value: 'kidney_disease', label: 'Kidney Disease'},
   ];
 
+  // Add this constant at the top of your component, after the features array
   const models = [
-    "Decision_Tree",
-    "Logistic_Regression",
-    "XGBoost",
-    "LightGBM"
+    'Decision_Tree',
+    'Logistic_Regression',
+    'LightGBM',
+    'XGBoost'
   ];
 
   // Effect for distribution data
@@ -84,7 +89,7 @@ export default function Dashboard() {
     const fetchConfusionData = async () => {
       setConfusionLoading(true);
       try {
-        const confusion = await api.getConfusionMatrix(selectedModel);
+        const confusion = await api.getConfusionMatrix(selectedConfusionModel);
         setConfusionMatrix(confusion);
         setError(null);
       } catch (err) {
@@ -96,7 +101,26 @@ export default function Dashboard() {
     };
 
     fetchConfusionData();
-  }, [selectedModel]);
+  }, [selectedConfusionModel]);
+
+    // Effect for feature importance
+    useEffect(() => {
+      const fetchFeatureImportance = async () => {
+        setFeatureImportanceLoading(true);
+        try {
+          const data = await api.getFeatureImportance();
+          setFeatureImportance(data);
+          setError(null);
+        } catch (err) {
+          console.error('Error fetching feature importance:', err);
+          setError('Failed to load feature importance data');
+        } finally {
+          setFeatureImportanceLoading(false);
+        }
+      };
+  
+      fetchFeatureImportance();
+    }, []);
 
   // Effect for correlation matrix (only fetched once)
   useEffect(() => {
@@ -132,42 +156,44 @@ export default function Dashboard() {
       {/* Distribution Analysis Section */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Distribution Analysis</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Select Feature
-          </label>
-          <select
-            value={selectedFeature}
-            onChange={(e) => setSelectedFeature(e.target.value)}
-            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
-          >
-            {features.map(feature => (
-              <option key={feature.value} value={feature.value}>
-                {feature.label}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="bg-white rounded-lg shadow p-6">
           {distributionLoading ? (
             <div className="flex justify-center items-center h-[400px]">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {distributionData && (
-                <BarChart
-                  data={distributionData}
-                  title={`Distribution by ${selectedFeature}`}
-                />
-              )}
-              {avgRiskData && (
-                <BarChart
-                  data={avgRiskData}
-                  title={`Average Diabetes Risk by ${selectedFeature}`}
-                />
-              )}
-            </div>
+            <>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Feature
+                </label>
+                <select
+                  value={selectedFeature}
+                  onChange={(e) => setSelectedFeature(e.target.value)}
+                  className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
+                >
+                  {features.map(feature => (
+                    <option key={feature.value} value={feature.value}>
+                      {feature.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {distributionData && (
+                  <Distribution
+                    data={distributionData}
+                    title={`Data Distribution of ${selectedFeature}`}
+                  />
+                )}
+                {avgRiskData && (
+                  <Distribution
+                    data={avgRiskData}
+                    title={`Average Diabetes Risk by ${selectedFeature}`}
+                  />
+                )}
+              </div>
+            </>
           )}
         </div>
       </section>
@@ -175,22 +201,6 @@ export default function Dashboard() {
       {/* Confusion Matrix Section */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Model Performance Analysis</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Select Model
-          </label>
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
-          >
-            {models.map(model => (
-              <option key={model} value={model}>
-                {model.replace('_', ' ')}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="bg-white rounded-lg shadow p-6">
           {confusionLoading ? (
             <div className="flex justify-center items-center h-[400px]">
@@ -198,10 +208,65 @@ export default function Dashboard() {
             </div>
           ) : (
             confusionMatrix && (
-              <ConfusionMatrix 
-                data={confusionMatrix}
-                title={`Confusion Matrix of ${selectedModel.replace('_', ' ')}`}
-              />
+              <>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Model
+                  </label>
+                  <select
+                    value={selectedConfusionModel}
+                    onChange={(e) => setSelectedConfusionModel(e.target.value)}
+                    className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
+                  >
+                    {models.map((model) => (
+                      <option key={model} value={model}>
+                        {model.replace('_', ' ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <ConfusionMatrix 
+                  data={confusionMatrix}
+                  title={`Confusion Matrix of ${selectedConfusionModel.replace('_', ' ')}`}
+                />
+              </>
+            )
+          )}
+        </div>
+      </section>
+
+      {/* Feature Importance Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Feature Importance Analysis</h2>
+        <div className="bg-white rounded-lg shadow p-6">
+          {featureImportanceLoading ? (
+            <div className="flex justify-center items-center h-[400px]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : (
+            featureImportance && (
+              <>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Model
+                  </label>
+                  <select
+                    value={selectedFeatureModel}
+                    onChange={(e) => setSelectedFeatureModel(e.target.value)}
+                    className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
+                  >
+                    {Object.keys(featureImportance).map((model) => (
+                      <option key={model} value={model}>
+                        {model.replace('_', ' ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <FeatureImportance 
+                  data={featureImportance} 
+                  selectedModel={selectedFeatureModel} 
+                />
+              </>
             )
           )}
         </div>
@@ -220,6 +285,11 @@ export default function Dashboard() {
           )}
         </div>
       </section>
+
+      {/* Add the footer */}
+      <footer className="text-center text-gray-400 text-sm py-8">
+        Zarni Nway Oo | 2025
+      </footer>
     </div>
   );
 }

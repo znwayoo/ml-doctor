@@ -42,6 +42,11 @@ export default function SeeTheDoctor() {
           onClose={() => setShowResults(false)}
         />
       )}
+
+      {/* Add the footer */}
+      <footer className="text-center text-gray-400 text-sm py-8">
+        Zarni Nway Oo | 2025
+      </footer>
     </div>
   );
 }

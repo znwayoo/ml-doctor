@@ -9,7 +9,7 @@ import {
   LabelList
 } from "recharts";
 
-export default function BarChart({ data, xAxisKey, yAxisKey, title }) {
+export default function Distribution({ data, xAxisKey, yAxisKey, title }) {
   // Transform data from object to array format for Recharts
   const chartData = Object.entries(data).map(([category, value]) => ({
     category,
@@ -51,7 +51,14 @@ export default function BarChart({ data, xAxisKey, yAxisKey, title }) {
             }}
             tick={{ fontSize: 10 }}
           />
-          <Tooltip />
+          <Tooltip 
+            formatter={(value) => [`${value.toFixed(2)}%`, "Percentage"]}
+            contentStyle={{
+              backgroundColor: "white",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+            }}
+          />
           <Bar dataKey="value" fill="#8884d8">
             <LabelList
               dataKey="value"

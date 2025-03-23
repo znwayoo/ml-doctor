@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import { api } from '../services/api';
+import FeatureImportance from '../components/charts/FeatureImportance';
 
 export default function ProjectFindings() {
   const [diabetesData, setDiabetesData] = useState(null);
@@ -219,7 +220,7 @@ export default function ProjectFindings() {
             </ResponsiveContainer>
           </div>
         )}
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="mt-4 text-xs text-gray-600">
           <p>
             This chart illustrates the distribution of diabetes cases in the
             dataset, highlighting the class imbalance, with 86.2% non-diabetic
@@ -581,75 +582,22 @@ export default function ProjectFindings() {
 
         {/* Feature Importance Chart */}
         {featureImportance && (
-          <div className="h-[500px] bg-white rounded-lg shadow p-6">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={featureImportance[selectedModel].features.map((feature, index) => ({
-                  feature: feature,
-                  importance: selectedModel === "LightGBM" 
-                    ? featureImportance[selectedModel].importance[index]
-                    : featureImportance[selectedModel].importance[index] * 100,
-                }))}
-                layout="vertical"
-                margin={{ top: 10, right: 20, left: 20, bottom: 30 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 286.32)"/>
-                <XAxis 
-                  type="number" 
-                  domain={selectedModel === "LightGBM" ? [0, 600] : [0, 100]}
-                  label={{ 
-                    value: selectedModel === "LightGBM" ? "Split Count" : "Importance (%)", 
-                    position: "bottom",
-                    offset: 10
-                  }}
-                />
-                <YAxis
-                  type="category"
-                  dataKey="feature"
-                  width={140}
-                  tick={{ fontSize: 12 }}
-                />
-                <Tooltip
-                  formatter={(value) => [
-                    selectedModel === "LightGBM" 
-                      ? value.toFixed(0)
-                      : `${value.toFixed(2)}%`,
-                    "Importance"
-                  ]}
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                  }}
-                />
-                <Bar 
-                  dataKey="importance" 
-                  fill="#8884d8" 
-                  radius={[0, 4, 4, 0]}
-                >
-                  <LabelList
-                    dataKey="importance"
-                    position="right"
-                    formatter={(value) => 
-                      selectedModel === "LightGBM" 
-                        ? value.toFixed(0)
-                        : `${value.toFixed(2)}%`
-                    }
-                  />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="h-[600px] bg-white rounded-lg shadow p-6 mb-6">
+            <FeatureImportance 
+              data={featureImportance} 
+              selectedModel={selectedModel} 
+            />
+            <p className="mt-4 text-xs text-gray-600 mb-4">
+              This chart shows the relative importance of each feature in predicting
+              diabetes risk according to the {selectedModel} model. 
+              {selectedModel === "LightGBM" 
+                ? " The values represent the number of times each feature was used for splitting in the trees."
+                : " Higher percentages indicate stronger influence on the model's predictions."
+              }
+            </p>
           </div>
         )}
 
-        <p className="mt-4 mb-4">
-          This chart shows the relative importance of each feature in predicting
-          diabetes risk according to the {selectedModel} model. 
-          {selectedModel === "LightGBM" 
-            ? " The values represent the number of times each feature was used for splitting in the trees."
-            : " Higher percentages indicate stronger influence on the model's predictions."
-          }
-        </p>
         <p>
           Additionally, the <strong>SHAP summary plot</strong> highlights the
           features that have a positive or negative impact on the model's
@@ -764,6 +712,10 @@ export default function ProjectFindings() {
           replace, human expertise in healthcare.
         </p>
       </section>
+      {/* Add the footer */}
+      <footer className="text-center text-gray-400 text-sm py-8">
+        Zarni Nway Oo | 2025
+      </footer>
     </div>
   );
 }
