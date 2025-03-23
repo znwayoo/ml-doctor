@@ -172,7 +172,7 @@ export default function ProjectFindings() {
                 data={diabetesData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 286.32)"/>
                 <XAxis
                   dataKey="status"
                   tick={{ fill: "#666" }}
@@ -267,7 +267,7 @@ export default function ProjectFindings() {
           Training Results & Evaluation
         </h2>
         <div className="bg-white rounded-lg shadow">
-          <div className="max-h-[600px] overflow-y-auto relative">
+          <div className="max-h-[800px] overflow-y-auto relative">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 sticky top-0 z-10">
                 <tr>
@@ -593,7 +593,7 @@ export default function ProjectFindings() {
                 layout="vertical"
                 margin={{ top: 10, right: 20, left: 20, bottom: 30 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 286.32)"/>
                 <XAxis 
                   type="number" 
                   domain={selectedModel === "LightGBM" ? [0, 600] : [0, 100]}

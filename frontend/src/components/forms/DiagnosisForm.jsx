@@ -75,7 +75,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.age_group}
             onChange={(e) => setFormData({...formData, age_group: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(AGE_MAP).map(age => (
               <option key={age} value={age}>{age}</option>
@@ -91,7 +91,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.gender}
             onChange={(e) => setFormData({...formData, gender: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(GENDER_MAP).map(gender => (
               <option key={gender} value={gender}>{gender}</option>
@@ -107,7 +107,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.race}
             onChange={(e) => setFormData({...formData, race: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(RACE_MAP).map(race => (
               <option key={race} value={race}>{race}</option>
@@ -123,7 +123,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.education}
             onChange={(e) => setFormData({...formData, education: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(EDUCATION_MAP).map(edu => (
               <option key={edu} value={edu}>{edu}</option>
@@ -141,7 +141,7 @@ export default function DiagnosisForm({ onResults }) {
               type="number"
               value={formData.weight}
               onChange={(e) => setFormData({...formData, weight: e.target.value})}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-4"
               min="1"
               step="0.1"
               required
@@ -155,7 +155,7 @@ export default function DiagnosisForm({ onResults }) {
               type="number"
               value={formData.height}
               onChange={(e) => setFormData({...formData, height: e.target.value})}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-4"
               min="1"
               step="0.1"
               required
@@ -171,7 +171,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.physical_activity}
             onChange={(e) => setFormData({...formData, physical_activity: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -187,7 +187,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.alcohol_consumption}
             onChange={(e) => setFormData({...formData, alcohol_consumption: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(ALCOHOL_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -203,7 +203,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.smoking_status}
             onChange={(e) => setFormData({...formData, smoking_status: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -219,7 +219,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.high_blood_pressure}
             onChange={(e) => setFormData({...formData, high_blood_pressure: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -235,7 +235,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.high_cholesterol}
             onChange={(e) => setFormData({...formData, high_cholesterol: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -251,7 +251,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.heart_disease}
             onChange={(e) => setFormData({...formData, heart_disease: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>
@@ -267,7 +267,7 @@ export default function DiagnosisForm({ onResults }) {
           <select
             value={formData.kidney_disease}
             onChange={(e) => setFormData({...formData, kidney_disease: e.target.value})}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-12 px-3"
           >
             {Object.keys(BINARY_MAP).map(option => (
               <option key={option} value={option}>{option}</option>

@@ -5,7 +5,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   LabelList
 } from "recharts";
@@ -17,23 +16,43 @@ export default function BarChart({ data, xAxisKey, yAxisKey, title }) {
     value: Number(value.toFixed(2)),
   }));
 
+  // Calculate dynamic XAxis height based on number of categories
+  const getXAxisHeight = () => {
+    return chartData.length <= 2 ? 100 : 200;
+  };
+
   return (
-    <div className="w-full h-[400px] bg-white p-4 rounded-lg shadow">
+    <div className="w-full h-[550px] bg-white p-4 rounded-lg shadow">
       <h3 className="text-lg font-semibold mb-4">{title}</h3>
       <ResponsiveContainer width="100%" height="100%">
-        <RechartsBarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="category" angle={-45} textAnchor="end" height={80} />
+        <RechartsBarChart 
+          data={chartData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3"stroke="oklch(0.92 0.004 286.32)"/>
+          <XAxis 
+            dataKey="category" 
+            angle={-45} 
+            textAnchor="end" 
+            height={getXAxisHeight()}
+            tick={{ 
+              fontSize: 12,
+              fill: '#666',
+              dx: -5
+            }}
+            interval={0}
+          />
           <YAxis
             label={{
               value: "% of Population",
               angle: -90,
               position: "insideLeft",
+              style: { textAnchor: 'middle' }
             }}
+            tick={{ fontSize: 10 }}
           />
           <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#8884d8" name="Percentage">
+          <Bar dataKey="value" fill="#8884d8">
             <LabelList
               dataKey="value"
               position="top"

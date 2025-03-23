@@ -3,15 +3,24 @@ import { api } from '../services/api';
 import BarChart from '../components/charts/BarChart';
 import HeatMap from '../components/charts/HeatMap';
 import ConfusionMatrix from '../components/charts/ConfusionMatrix';
+import { getFeatureLabel } from '../utils/dataTransformers';
 
 export default function Dashboard() {
+  // State for data
   const [distributionData, setDistributionData] = useState(null);
   const [correlationData, setCorrelationData] = useState(null);
   const [avgRiskData, setAvgRiskData] = useState(null);
+  const [confusionMatrix, setConfusionMatrix] = useState(null);
+  
+  // Selection states
   const [selectedFeature, setSelectedFeature] = useState('age_group');
   const [selectedModel, setSelectedModel] = useState('Decision_Tree');
-  const [confusionMatrix, setConfusionMatrix] = useState(null);
-  const [loading, setLoading] = useState(true);
+  
+  // Individual loading states
+  const [distributionLoading, setDistributionLoading] = useState(true);
+  const [confusionLoading, setConfusionLoading] = useState(true);
+  const [correlationLoading, setCorrelationLoading] = useState(true);
+  
   const [error, setError] = useState(null);
 
   const features = [
@@ -36,42 +45,77 @@ export default function Dashboard() {
     "LightGBM"
   ];
 
+  // Effect for distribution data
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchDistributionData = async () => {
+      setDistributionLoading(true);
       try {
-        const [distribution, correlation, avgRisk, confusion] = await Promise.all([
+        const [distribution, avgRisk] = await Promise.all([
           api.getDistribution(selectedFeature),
-          api.getCorrelation(),
-          api.getAverageRisk(selectedFeature),
-          api.getConfusionMatrix(selectedModel)
+          api.getAverageRisk(selectedFeature)
         ]);
 
-        console.log('Confusion Matrix Data:', confusion);
+        const transformedDistribution = Object.entries(distribution).reduce((acc, [key, value]) => {
+          acc[getFeatureLabel(selectedFeature, key)] = value;
+          return acc;
+        }, {});
 
-        setDistributionData(distribution);
-        setCorrelationData(correlation);
-        setAvgRiskData(avgRisk);
-        setConfusionMatrix(confusion);
+        const transformedAvgRisk = Object.entries(avgRisk).reduce((acc, [key, value]) => {
+          acc[getFeatureLabel(selectedFeature, key)] = value;
+          return acc;
+        }, {});
+
+        setDistributionData(transformedDistribution);
+        setAvgRiskData(transformedAvgRisk);
         setError(null);
       } catch (err) {
-        console.error('Error fetching data:', err);
-        setError('Failed to load dashboard data');
+        console.error('Error fetching distribution data:', err);
+        setError('Failed to load distribution data');
       } finally {
-        setLoading(false);
+        setDistributionLoading(false);
       }
     };
 
-    fetchData();
-  }, [selectedFeature, selectedModel]);
+    fetchDistributionData();
+  }, [selectedFeature]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
+  // Effect for confusion matrix
+  useEffect(() => {
+    const fetchConfusionData = async () => {
+      setConfusionLoading(true);
+      try {
+        const confusion = await api.getConfusionMatrix(selectedModel);
+        setConfusionMatrix(confusion);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching confusion matrix:', err);
+        setError('Failed to load confusion matrix');
+      } finally {
+        setConfusionLoading(false);
+      }
+    };
+
+    fetchConfusionData();
+  }, [selectedModel]);
+
+  // Effect for correlation matrix (only fetched once)
+  useEffect(() => {
+    const fetchCorrelationData = async () => {
+      setCorrelationLoading(true);
+      try {
+        const correlation = await api.getCorrelation();
+        setCorrelationData(correlation);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching correlation data:', err);
+        setError('Failed to load correlation data');
+      } finally {
+        setCorrelationLoading(false);
+      }
+    };
+
+    fetchCorrelationData();
+  }, []); // Empty dependency array as correlation data only needs to be fetched once
 
   if (error) {
     return (
@@ -95,7 +139,7 @@ export default function Dashboard() {
           <select
             value={selectedFeature}
             onChange={(e) => setSelectedFeature(e.target.value)}
-            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
           >
             {features.map(feature => (
               <option key={feature.value} value={feature.value}>
@@ -104,18 +148,26 @@ export default function Dashboard() {
             ))}
           </select>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {distributionData && (
-            <BarChart
-              data={distributionData}
-              title={`Distribution by ${selectedFeature}`}
-            />
-          )}
-          {avgRiskData && (
-            <BarChart
-              data={avgRiskData}
-              title={`Average Diabetes Risk by ${selectedFeature}`}
-            />
+        <div className="bg-white rounded-lg shadow p-6">
+          {distributionLoading ? (
+            <div className="flex justify-center items-center h-[400px]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {distributionData && (
+                <BarChart
+                  data={distributionData}
+                  title={`Distribution by ${selectedFeature}`}
+                />
+              )}
+              {avgRiskData && (
+                <BarChart
+                  data={avgRiskData}
+                  title={`Average Diabetes Risk by ${selectedFeature}`}
+                />
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -130,7 +182,7 @@ export default function Dashboard() {
           <select
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            className="mt-1 block w-full md:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-10 px-3"
           >
             {models.map(model => (
               <option key={model} value={model}>
@@ -139,20 +191,34 @@ export default function Dashboard() {
             ))}
           </select>
         </div>
-        {confusionMatrix && (
-          <ConfusionMatrix 
-            data={confusionMatrix}
-            title={`Confusion Matrix of ${selectedModel.replace('_', ' ')}`}
-          />
-        )}
+        <div className="bg-white rounded-lg shadow p-6">
+          {confusionLoading ? (
+            <div className="flex justify-center items-center h-[400px]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : (
+            confusionMatrix && (
+              <ConfusionMatrix 
+                data={confusionMatrix}
+                title={`Confusion Matrix of ${selectedModel.replace('_', ' ')}`}
+              />
+            )
+          )}
+        </div>
       </section>
 
       {/* Correlation Matrix Section */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Feature Correlation Analysis</h2>
-        {correlationData && (
-          <HeatMap data={correlationData} />
-        )}
+        <div className="bg-white rounded-lg shadow p-6">
+          {correlationLoading ? (
+            <div className="flex justify-center items-center h-[400px]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : (
+            correlationData && <HeatMap data={correlationData} />
+          )}
+        </div>
       </section>
     </div>
   );

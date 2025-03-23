@@ -12,7 +12,11 @@ export default function HeatMap({ data }) {
       // Clear previous rendering
       d3.select(svgRef.current).selectAll("*").remove();
 
-      const features = Object.keys(data);
+      // Reorder features to put diabetes_status at the end
+      let features = Object.keys(data);
+      features = features.filter(f => f !== 'diabetes_status').sort();
+      features.push('diabetes_status'); // Add diabetes_status at the end
+
       const container = containerRef.current;
       const containerWidth = container.clientWidth;
       const containerHeight = container.clientHeight || containerWidth * 0.8; // Set a default aspect ratio if height is 0
@@ -41,26 +45,83 @@ export default function HeatMap({ data }) {
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
+      // Create tooltip
+      const tooltip = d3.select(containerRef.current)
+        .append("div")
+        .attr("class", "tooltip")
+        .style("position", "fixed")
+        .style("visibility", "hidden")
+        .style("background-color", "rgba(0, 0, 0, 0.8)")
+        .style("color", "white")
+        .style("padding", "8px")
+        .style("border-radius", "4px")
+        .style("font-size", "12px")
+        .style("pointer-events", "none")
+        .style("z-index", "100");
+
       // Create cells
       features.forEach((row, i) => {
         features.forEach((col, j) => {
-          svg.append('rect')
-            .attr('x', j * cellSize)
-            .attr('y', i * cellSize)
+          const cellGroup = svg.append('g')
+            .attr('class', 'cell-group')
+            .attr('transform', `translate(${j * cellSize},${i * cellSize})`);
+
+          // Add rectangle to each group
+          cellGroup.append('rect')
             .attr('width', cellSize)
             .attr('height', cellSize)
             .attr('fill', colorScale(data[row][col]))
             .attr('stroke', 'white')
             .attr('stroke-width', 1);
 
-          svg.append('text')
-            .attr('x', j * cellSize + cellSize / 2)
-            .attr('y', i * cellSize + cellSize / 2)
+          // Add text to each group
+          cellGroup.append('text')
+            .attr('x', cellSize / 2)
+            .attr('y', cellSize / 2)
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'middle')
             .style('fill', Math.abs(data[row][col]) > 0.5 ? 'white' : 'black')
             .style('font-size', '12px')
+            .style('pointer-events', 'none')
             .text(data[row][col].toFixed(2));
+
+          // Add interactivity to the group
+          cellGroup
+            .style('cursor', 'pointer')
+            .on('mouseover', function(event) {
+              // Bring the group to front
+              this.parentNode.appendChild(this);
+              
+              d3.select(this).select('rect')
+                .attr('stroke', 'oklch(0.746 0.16 232.661)') // Update highlight color
+                .attr('stroke-width', 2);
+
+              const cellRect = this.getBoundingClientRect();
+              
+              tooltip
+                .style("visibility", "visible")
+                .html(`
+                  <strong>Correlation:</strong> ${data[row][col].toFixed(2)}<br/>
+                  <strong>Row:</strong> ${row}<br/>
+                  <strong>Column:</strong> ${col}
+                `)
+                .style("left", `${cellRect.left + cellRect.width/2}px`)
+                .style("top", `${cellRect.bottom + 20}px`)
+                .style("transform", "translate(-50%, 0)");
+            })
+            .on('mouseout', function() {
+              d3.select(this).select('rect')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 1);
+              
+              tooltip.style("visibility", "hidden");
+            })
+            .on('mousemove', function(event) {
+              tooltip
+                .style("left", `${event.clientX}px`)
+                .style("top", `${event.clientY + 20}px`)
+                .style("transform", "translate(-50%, 0)");
+            });
         });
       });
 
@@ -157,7 +218,10 @@ export default function HeatMap({ data }) {
     resizeObserver.observe(containerRef.current);
 
     // Cleanup
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+      d3.select(containerRef.current).selectAll('.tooltip').remove();
+    };
   }, [data]);
 
   return (
