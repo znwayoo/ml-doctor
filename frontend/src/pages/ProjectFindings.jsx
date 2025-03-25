@@ -8,6 +8,7 @@ export default function ProjectFindings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [featureImportance, setFeatureImportance] = useState(null);
+  const [fimpLoading, setfimpLoading] = useState(null);
   const [selectedModel, setSelectedModel] = useState('Decision_Tree');
 
   useEffect(() => {
@@ -41,11 +42,16 @@ export default function ProjectFindings() {
 
   useEffect(() => {
     const fetchFeatureImportance = async () => {
+        setfimpLoading(true);
         try {
             const data = await api.getFeatureImportance();
             setFeatureImportance(data);
+            setError(null);
         } catch (err) {
             console.error('Error fetching feature importance:', err);
+            setError('Failed to load feature importance data');
+        } finally {
+          setfimpLoading(false);
         }
     };
 
@@ -173,7 +179,10 @@ export default function ProjectFindings() {
                 data={diabetesData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 286.32)"/>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="oklch(0.92 0.004 286.32)"
+                />
                 <XAxis
                   dataKey="status"
                   tick={{ fill: "#666" }}
@@ -553,15 +562,13 @@ export default function ProjectFindings() {
       {/* Findings Section */}
       <section className="prose lg:prose-xl mb-12">
         <h2 className="text-2xl font-bold mb-4">Findings</h2>
-        <p className='mb-4'>
+        <p className="mb-4">
           From the <strong>tree-based models</strong>, I analyzed feature
           importance and found that
           <strong> high blood pressure</strong> plays a significant role in
           determining diabetes risk.
         </p>
-        <h3 className="text-l font-bold mb-4">
-          Feature Importance Analysis
-        </h3>
+        <h3 className="text-l font-bold mb-4">Feature Importance Analysis</h3>
 
         {/* Model Selection */}
         <div className="mb-4">
@@ -574,28 +581,32 @@ export default function ProjectFindings() {
             {featureImportance &&
               Object.keys(featureImportance).map((model) => (
                 <option key={model} value={model}>
-                  {model}
+                  {model.replace("_", " ")}
                 </option>
               ))}
           </select>
         </div>
-
-        {/* Feature Importance Chart */}
-        {featureImportance && (
-          <div className="h-[600px] bg-white rounded-lg shadow p-6 mb-6">
-            <FeatureImportance 
-              data={featureImportance} 
-              selectedModel={selectedModel} 
-            />
-            <p className="mt-4 text-xs text-gray-600 mb-4">
-              This chart shows the relative importance of each feature in predicting
-              diabetes risk according to the {selectedModel} model. 
-              {selectedModel === "LightGBM" 
-                ? " The values represent the number of times each feature was used for splitting in the trees."
-                : " Higher percentages indicate stronger influence on the model's predictions."
-              }
-            </p>
+        {fimpLoading ? (
+          <div className="flex justify-center items-center h-[400px] bg-white rounded-lg shadow p-6">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
           </div>
+        ) : (
+          featureImportance && (
+            <div className="h-[600px] bg-white rounded-lg shadow p-6 mb-6">
+              <FeatureImportance
+                data={featureImportance}
+                selectedModel={selectedModel}
+              />
+              <p className="mt-4 text-xs text-gray-600 mb-4">
+                This chart shows the relative importance of each feature in
+                predicting diabetes risk according to the{" "}
+                {selectedModel.replace("_", " ")} model.
+                {selectedModel === "LightGBM"
+                  ? " The values represent the number of times each feature was used for splitting in the trees."
+                  : " Higher percentages indicate stronger influence on the model's predictions."}
+              </p>
+            </div>
+          )
         )}
 
         <p>
@@ -618,7 +629,7 @@ export default function ProjectFindings() {
           when further optimizing the models to improve performance.
         </p>
       </section>
-      
+
       {/* Deployment Section */}
       <section className="prose lg:prose-xl mb-12">
         <h2 className="text-2xl font-bold mb-4">Deployment</h2>
