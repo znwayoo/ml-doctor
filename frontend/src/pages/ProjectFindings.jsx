@@ -120,6 +120,280 @@ export default function ProjectFindings() {
         </p>
       </section>
 
+      {/* Data Selection Section */}
+      <section className="prose lg:prose-xl mb-12">
+        <h2 className="text-2xl font-bold mb-4">Data Selection</h2>
+        <p className="mb-4">
+          Using the codebook, I thoroughly reviewed the dataset to identify the most relevant features for this project. Since the codebook clearly defines the purpose and expected values of each column, I was able to efficiently select the features that would be most useful for training the machine learning models. Below are the initial set of selected features, which I have preliminarily analyzed and documented within the dataset.
+        </p>
+
+        <h3 className="text-xl font-bold mb-4">Demographics</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">1</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">AGE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_AGE_G</td>
+                <td className="px-4 py-2 text-sm text-gray-900">no missing data, same length, 6 categories</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">2</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">SEX</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_SEX</td>
+                <td className="px-4 py-2 text-sm text-gray-900">no missing data, same length, 2 categories, binary</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">3</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">RACE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_IMPRACE</td>
+                <td className="px-4 py-2 text-sm text-gray-900">no missing data, same length, 6 categories</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">4</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EDUCATION</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_EDUCAG</td>
+                <td className="px-4 py-2 text-sm text-gray-900">2,325 missing data, same length, 5 categories (9 as don't know/not sure/missing data)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">5</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">INCOME</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_INCOMG1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">86,623 missing data, same length, 8 categories (9 as don't know/not sure/missing data)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Body Condition</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">6</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">BMI</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_BMI5CAT</td>
+                <td className="px-4 py-2 text-sm text-gray-900">40,535 missing data, same length, 4 categories</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">7</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">WEIGHT</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">WTKG3</td>
+                <td className="px-4 py-2 text-sm text-gray-900">34,151 missing data, same length (in KG, 2 decimal places)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">8</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HEIGHT</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HTIN4</td>
+                <td className="px-4 py-2 text-sm text-gray-900">27,999 missing data, same length (in inches)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Lifestyle</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">9</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EXERCISE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_TOTINDA</td>
+                <td className="px-4 py-2 text-sm text-gray-900">1,251 missing data, same length, 3 categories (9 as don't know/refused/missing), binary</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">10</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EXERCISE FREQUENCY</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EXEROFT1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">110,282 missing data, same length</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">11</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">ALCOHOL CONSUMPTION</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">ALCDAY4</td>
+                <td className="px-4 py-2 text-sm text-gray-900">25,444 + 2,711 + 1,785 missing data, same length, 5 categories (777 as don't know/not sure, 999 as refused)</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">12</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">SMOKE STATUS</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_RFSMOK3</td>
+                <td className="px-4 py-2 text-sm text-gray-900">23,062 missing data, same length, binary</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Current Health Condition</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">13</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HIGH BLOOD PRESSURE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_RFHYPE6</td>
+                <td className="px-4 py-2 text-sm text-gray-900">1,919 missing data, same length, binary</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">14</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HIGH CHOLESTEROL</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_RFCHOL3</td>
+                <td className="px-4 py-2 text-sm text-gray-900">51,811 + 3,273 missing data, same length, 3 categories (9 as not sure/don't know/refused), binary</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">15</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HEART DISEASE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">_MICHD</td>
+                <td className="px-4 py-2 text-sm text-gray-900">4,585 missing data, same length, 2 categories, binary</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">16</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">KIDNEY DISEASE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">CHCKDNY2</td>
+                <td className="px-4 py-2 text-sm text-gray-900">3 + 1,622 + 267 missing data, same length, 4 categories (7 as don't know/not sure, 9 as refused), binary</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Healthcare Access & Monitoring</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">17</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">LAST BLOOD SUGAR TEST</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">PDIABTS1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">267,074 + 11,324 + 220 missing data, same length, 9 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">18</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">HbA1c TEST</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">CHKHEMO3</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,063 + 1,333 + 109 missing data, same length, 5 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">19</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EYE EXAM</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EYEEXAM1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,070 + 571 + 33 missing data, same length, 7 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">20</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">EYE PHOTO</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABEYE1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,079 + 2,972 + 23 missing data, same length, 7 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">21</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABETES EDU</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABEDU1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,083 + 1,113 + 64 missing data, same length, 9 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Diabetes Conditions</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">No</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">22</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">PRE-DIABETES</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">PREDIAB2</td>
+                <td className="px-4 py-2 text-sm text-gray-900">267,171 + 823 + 139 missing data, same length, 5 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">23</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABETES AGE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABAGE4</td>
+                <td className="px-4 py-2 text-sm text-gray-900">373,537 + 4,284 + 283 missing data, same length, continuous data with (98 as don't know/not sure, 99 category as refused)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">24</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABETES TYPE</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABTYPE</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,048 + 2,199 + 49 missing data, same length, 4 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">25</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">TAKING INSULIN</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">INSULIN1</td>
+                <td className="px-4 py-2 text-sm text-gray-900">409,055 + 101 + 18 missing data, same length, 4 categories (7 as don't know/not sure, 9 as refused)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-xl font-bold mb-4">Target</h3>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Variable</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Code</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABETES</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">DIABETE4</td>
+                <td className="px-4 py-2 text-sm text-gray-900">5 missing data, same length, 6 categories</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Data Preprocessing Section */}
       <section className="prose lg:prose-xl mb-12">
         <h2 className="text-2xl font-bold mb-4">Data Preprocessing</h2>
